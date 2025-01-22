@@ -3,7 +3,7 @@ import { Input, Select, SelectItem } from "@heroui/react";
 import { Textarea } from "@nextui-org/react";
 import { useState } from "react";
 
-export const animals = [
+const queries = [
   { key: "Insert", label: "Insert" },
   { key: "Select", label: "Select" },
   { key: "Delete", label: "Delete" },
@@ -35,7 +35,7 @@ export default function Home() {
         <h2 className="text-[20px] font-bold">Format string SQL</h2>
         <div className="flex flex-col gap-[20px]">
           <Select className="max-w-xs" label="Select query">
-            {animals.map((animal) => (
+            {queries.map((animal) => (
               <SelectItem key={animal.key}>{animal.label}</SelectItem>
             ))}
           </Select>
