@@ -32,7 +32,7 @@ export default function Home() {
   };
   return (
     <div className="flex items-center justify-center min-h-[100vh]">
-      <section className="w-[800px] bg-[#e5f9d7] p-[20px] rounded-[10px] flex flex-col gap-[20px]">
+      <section className="w-[800px] bg-[#3d3d3d] p-[20px] rounded-[10px] flex flex-col gap-[20px]">
         <h2 className="text-[20px] font-bold">Format string SQL</h2>
         <Select
           className="my-[20px]"

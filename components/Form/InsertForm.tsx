@@ -50,7 +50,7 @@ function InsertForm() {
         />
       </div>
       <h3 className="text-[16px] font-medium">Result</h3>
-      <div className="w-full overflow-auto bg-gray-100 p-4 rounded-lg border border-gray-300">
+      <div className="w-full overflow-auto bg-[#27272a] p-4 rounded-lg">
         <pre className="whitespace-pre-wrap break-words font-mono text-sm">
           {hadleGenerateSQL()}
         </pre>
