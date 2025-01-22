@@ -1,7 +1,8 @@
 "use client";
-import { Input, Select, SelectItem } from "@heroui/react";
+import { Button, Input, Select, SelectItem } from "@heroui/react";
 import { Textarea } from "@nextui-org/react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const queries = [
   { key: "Insert", label: "Insert" },
@@ -24,16 +25,22 @@ export default function Home() {
       "('" + ${arrVarriables
         .map(
           (item, index) =>
-            `${index !== 0 ? `"'" +` : ``}  ${item}  ${
-              index !== arrVarriables.length - 1 ? ` + "'"` : ``
+            `${index !== 0 ? `" +` : ``}  ${item}  ${
+              index !== arrVarriables.length - 1 ? ` + "` : ``
             }`
         )
-        .join(`","`)} + "')"
+        .join(`','`)} + "')"
     `;
 
     return insertSQL.trim();
   };
-
+  const handleCopyResult = () => {
+    const sqlResult = hadleGenerateSQL();
+    navigator.clipboard
+      .writeText(sqlResult)
+      .then(() => toast.success("Result copied to clipboard!"))
+      .catch(() => toast.error("Failed to copy result."));
+  };
   return (
     <div className="flex items-center justify-center min-h-[100vh]">
       <section className="w-[800px] bg-[#e5f9d7] p-[20px] rounded-[10px] flex flex-col gap-[20px]">
@@ -53,8 +60,8 @@ export default function Home() {
             />
             <Textarea
               className="w-full"
-              label="Description"
-              placeholder="Enter your description"
+              label="Colums data"
+              placeholder="data1, data2, data3"
               height={300}
               onChange={(e) => setInput(e.target.value)}
             />
@@ -64,6 +71,15 @@ export default function Home() {
             <pre className="whitespace-pre-wrap break-words font-mono text-sm">
               {hadleGenerateSQL()}
             </pre>
+          </div>
+          <div className="flex justify-end">
+            <Button
+              onPress={handleCopyResult}
+              className="w-[200px]"
+              color="primary"
+            >
+              Copy Result
+            </Button>
           </div>
         </div>
       </section>
