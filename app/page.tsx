@@ -1,8 +1,10 @@
 "use client";
-import { Button, Input, Select, SelectItem } from "@heroui/react";
-import { Textarea } from "@nextui-org/react";
+import DeleteForm from "@/components/Form/DeleteForm";
+import InsertForm from "@/components/Form/InsertForm";
+import SelectForm from "@/components/Form/SelectForm";
+import UpdateForm from "@/components/Form/UpdateForm";
+import { Select, SelectItem } from "@heroui/react";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 const queries = [
   { key: "Insert", label: "Insert" },
@@ -12,76 +14,39 @@ const queries = [
 ];
 
 export default function Home() {
-  const [input, setInput] = useState<string>("");
-  const [table, setTable] = useState<string>("");
-  const hadleGenerateSQL = () => {
-    let insertSQL = "";
-    const arrVarriables = input.split(",").map((item) => item.trim());
+  const [selectedQuery, setSelectedQuery] = useState<string>("Insert");
 
-    insertSQL = `
-      "INSERT INTO ${table} " +
-      "(${arrVarriables.map((item) => `[${item}]`).join(",")}) " +
-      "VALUES " +
-      "('" + ${arrVarriables
-        .map(
-          (item, index) =>
-            `${index !== 0 ? `" +` : ``}  ${item}  ${
-              index !== arrVarriables.length - 1 ? ` + "` : ``
-            }`
-        )
-        .join(`','`)} + "')"
-    `;
-
-    return insertSQL.trim();
-  };
-  const handleCopyResult = () => {
-    const sqlResult = hadleGenerateSQL();
-    navigator.clipboard
-      .writeText(sqlResult)
-      .then(() => toast.success("Result copied to clipboard!"))
-      .catch(() => toast.error("Failed to copy result."));
+  const renderForm = () => {
+    switch (selectedQuery) {
+      case "Insert":
+        return <InsertForm />;
+      case "Select":
+        return <SelectForm />;
+      case "Delete":
+        return <DeleteForm />;
+      case "Update":
+        return <UpdateForm />;
+      default:
+        return <p>Please select a query type.</p>;
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-[100vh]">
       <section className="w-[800px] bg-[#e5f9d7] p-[20px] rounded-[10px] flex flex-col gap-[20px]">
         <h2 className="text-[20px] font-bold">Format string SQL</h2>
-        <div className="flex flex-col gap-[20px]">
-          <Select className="max-w-xs" label="Select query">
-            {queries.map((animal) => (
-              <SelectItem key={animal.key}>{animal.label}</SelectItem>
-            ))}
-          </Select>
-          <h3 className="text-[16px] font-medium">Input variables</h3>
-          <div className="flex flex-col justify-end items-end gap-[20px]">
-            <Input
-              label="Table"
-              type="text"
-              onChange={(e) => setTable(e.target.value)}
-            />
-            <Textarea
-              className="w-full"
-              label="Colums data"
-              placeholder="data1, data2, data3"
-              height={300}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </div>
-          <h3 className="text-[16px] font-medium">Result</h3>
-          <div className="w-full overflow-auto bg-gray-100 p-4 rounded-lg border border-gray-300">
-            <pre className="whitespace-pre-wrap break-words font-mono text-sm">
-              {hadleGenerateSQL()}
-            </pre>
-          </div>
-          <div className="flex justify-end">
-            <Button
-              onPress={handleCopyResult}
-              className="w-[200px]"
-              color="primary"
-            >
-              Copy Result
-            </Button>
-          </div>
-        </div>
+        <Select
+          className="my-[20px]"
+          label="Select query"
+          onChange={(event) => setSelectedQuery(event.target.value)}
+        >
+          {queries.map((query) => (
+            <SelectItem key={query.key} value={query.key}>
+              {query.label}
+            </SelectItem>
+          ))}
+        </Select>
+
+        {renderForm()}
       </section>
     </div>
   );
