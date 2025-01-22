@@ -28,7 +28,7 @@ export default function Home() {
               index !== arrVarriables.length - 1 ? ` + "'"` : ``
             }`
         )
-        .join(",")} + "')"
+        .join(`","`)} + "')"
     `;
 
     return insertSQL.trim();
