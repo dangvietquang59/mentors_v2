@@ -19,11 +19,16 @@ export default function Home() {
 
     insertSQL = `
       "INSERT INTO ${table} " +
-      (${arrVarriables.map((item) => `[${item}]`).join(",")})
-      "VALUES"
-      "(" + ${arrVarriables
-        .map((item) => `"'" + ${item} + "'"`)
-        .join(",")} + ")"
+      "(${arrVarriables.map((item) => `[${item}]`).join(",")}) " +
+      "VALUES " +
+      "('" + ${arrVarriables
+        .map(
+          (item, index) =>
+            `${index !== 0 ? `"'" +` : ``}  ${item}  ${
+              index !== arrVarriables.length - 1 ? ` + "'"` : ``
+            }`
+        )
+        .join(",")} + "')"
     `;
 
     return insertSQL.trim();
