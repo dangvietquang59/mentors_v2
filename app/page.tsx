@@ -1,101 +1,67 @@
-import Image from "next/image";
+"use client";
+import { Input, Select, SelectItem } from "@heroui/react";
+import { Textarea } from "@nextui-org/react";
+import { useState } from "react";
+
+export const animals = [
+  { key: "Insert", label: "Insert" },
+  { key: "Select", label: "Select" },
+  { key: "Delete", label: "Delete" },
+  { key: "Update", label: "Update" },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [input, setInput] = useState<string>("");
+  const [table, setTable] = useState<string>("");
+  const hadleGenerateSQL = () => {
+    let insertSQL = "";
+    const arrVarriables = input.split(",").map((item) => item.trim());
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    insertSQL = `
+      "INSERT INTO ${table} " +
+      (${arrVarriables.map((item) => `[${item}]`).join(",")})
+      "VALUES"
+      "(" + ${arrVarriables
+        .map((item) => `"'" + ${item} + "'"`)
+        .join(",")} + ")"
+    `;
+
+    return insertSQL.trim();
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-[100vh]">
+      <section className="w-[800px] bg-[#e5f9d7] p-[20px] rounded-[10px] flex flex-col gap-[20px]">
+        <h2 className="text-[20px] font-bold">Format string SQL</h2>
+        <div className="flex flex-col gap-[20px]">
+          <Select className="max-w-xs" label="Select query">
+            {animals.map((animal) => (
+              <SelectItem key={animal.key}>{animal.label}</SelectItem>
+            ))}
+          </Select>
+          <h3 className="text-[16px] font-medium">Input variables</h3>
+          <div className="flex flex-col justify-end items-end gap-[20px]">
+            <Input
+              label="Table"
+              type="text"
+              onChange={(e) => setTable(e.target.value)}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <Textarea
+              className="w-full"
+              label="Description"
+              placeholder="Enter your description"
+              height={300}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <h3 className="text-[16px] font-medium">Result</h3>
+          <div className="w-full overflow-auto bg-gray-100 p-4 rounded-lg border border-gray-300">
+            <pre className="whitespace-pre-wrap break-words font-mono text-sm">
+              {hadleGenerateSQL()}
+            </pre>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
     </div>
   );
 }
