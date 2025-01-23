@@ -59,7 +59,7 @@ function InsertForm() {
         <Button
           onPress={handleCopyResult}
           className="w-[200px]"
-          color="primary"
+          color="secondary"
         >
           Copy Result
         </Button>

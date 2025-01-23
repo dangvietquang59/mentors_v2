@@ -37,6 +37,8 @@ export default function Home() {
         <Select
           className="my-[20px]"
           label="Select query"
+          placeholder="Select query"
+          defaultSelectedKeys={["Insert"]}
           onChange={(event) => setSelectedQuery(event.target.value)}
         >
           {queries.map((query) => (
