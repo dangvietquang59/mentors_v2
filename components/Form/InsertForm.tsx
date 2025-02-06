@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@heroui/react";
+import { Button, Card, Input, Textarea } from "@heroui/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 function InsertForm() {
@@ -20,7 +20,7 @@ function InsertForm() {
                   index !== arrVarriables.length - 1 ? ` + "` : ``
                 }`
             )
-            .join(`','`)} + "')"
+            .join(`','`)} + "');"
         `;
 
     return insertSQL.trim();
@@ -50,11 +50,11 @@ function InsertForm() {
         />
       </div>
       <h3 className="text-[16px] font-medium">Result</h3>
-      <div className="w-full overflow-auto bg-[#27272a] p-4 rounded-lg">
+      <Card className="p-[20px]">
         <pre className="whitespace-pre-wrap break-words font-mono text-sm">
           {hadleGenerateSQL()}
         </pre>
-      </div>
+      </Card>
       <div className="flex justify-end">
         <Button
           onPress={handleCopyResult}
